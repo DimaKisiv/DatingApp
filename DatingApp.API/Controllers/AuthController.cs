@@ -43,7 +43,11 @@ namespace DatingApp.API.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(UserForRegister userParam)
         {
+           
+            throw new Exception("some error");
+            
             User userFromDb = await _repo.Login(userParam.username.ToLower(), userParam.password);
+
 
             if (userFromDb == null)
                 return Unauthorized();
