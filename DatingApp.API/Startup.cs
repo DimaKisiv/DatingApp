@@ -34,14 +34,8 @@ namespace DatingApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-          {
-              options.AddPolicy("MyAllowSpecificOrigins",
-              builder =>
-              {
-                  builder.WithOrigins("http://localhost:4200");
-              });
-          });
+            services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).
             AddJsonOptions(opt=> {
                 opt.SerializerSettings.ReferenceLoopHandling = 
@@ -102,7 +96,7 @@ namespace DatingApp.API
             //app.UseHttpsRedirection();
 
             //app.UseCors("MyAllowSpecificOrigins");
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(x => x.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseMvc();
 

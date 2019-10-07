@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.DTOs;
 using DatingApp.API.Models;
@@ -18,9 +19,13 @@ namespace DatingApp.API.Controllers
     {
         private IAuthRepository _repo;
         private readonly IConfiguration _config;
-        public AuthController(IAuthRepository repo, IConfiguration config)
+
+        public IMapper _mapper;
+
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
             _config = config;
+            _mapper = mapper;
             _repo = repo;
         }
         [HttpPost]
@@ -30,11 +35,11 @@ namespace DatingApp.API.Controllers
             userParam.username = userParam.username.ToLower();
 
             if (await _repo.UserExists(userParam.username))
-               return BadRequest("User already exists");
+                return BadRequest("User already exists");
 
             User newUserBeforeSave = new User()
             {
-               Username = userParam.username
+                Username = userParam.username
             };
             User newUserAfterSave = await _repo.Register(newUserBeforeSave, userParam.password);
             return Ok(newUserAfterSave);
@@ -44,7 +49,6 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> Login(UserForRegister userParam)
         {
             User userFromDb = await _repo.Login(userParam.username.ToLower(), userParam.password);
-
 
             if (userFromDb == null)
                 return Unauthorized();
@@ -71,7 +75,13 @@ namespace DatingApp.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new { token = tokenHandler.WriteToken(token) });
+            var user = _mapper.Map<UserForListDto>(userFromDb);
+
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token),
+                user
+            });
         }
     }
 }
