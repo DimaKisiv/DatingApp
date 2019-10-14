@@ -47,6 +47,7 @@ namespace DatingApp.API
                     x => x.MigrationsAssembly("DatingApp.API")
                 )
             );
+            services.AddScoped<LogUserActivity>();
             services.AddAutoMapper(typeof(DatingRepository).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();

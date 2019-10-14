@@ -14,7 +14,9 @@ import { NgModule } from '@angular/core';
 import {
   BsDropdownModule,
   TabsModule,
-  BsDatepickerModule
+  BsDatepickerModule,
+  PaginationModule,
+  ButtonsModule
 } from 'ngx-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -72,6 +74,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
     ReactiveFormsModule,
     NgxGalleryModule,
     FileUploadModule,
+    ButtonsModule.forRoot(),
+    PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
