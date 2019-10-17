@@ -1,3 +1,4 @@
+import { MessagesResolver } from './_resolvers/messages.resolver';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
@@ -35,7 +36,7 @@ export const appRoutes: Routes = [
         component: MemberDetailComponent,
         resolve: { user: MemberDetailResolver }
       },
-      { path: 'messages', component: MessagesComponent },
+      { path: 'messages', component: MessagesComponent, resolve: {messages: MessagesResolver} },
       { path: 'lists', component: ListsComponent, resolve: {users: ListsResolver} }
     ]
   },

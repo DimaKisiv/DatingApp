@@ -1,3 +1,5 @@
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { MessagesResolver } from './_resolvers/messages.resolver';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
@@ -39,6 +41,7 @@ import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
 import { UserService } from './_services/user.service';
 import { NgxGalleryModule } from 'ngx-gallery';
+import { TimeagoModule } from 'ngx-timeago';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 
 export function tokenGetter() {
@@ -64,7 +67,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
     MemberCardComponent,
     MemberDetailComponent,
     MemberEditComponent,
-    PhotoEditorComponent
+    PhotoEditorComponent,
+    MemberMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +84,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
     BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
+    TimeagoModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
       config: {
@@ -97,6 +102,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
     UserService,
     MemberDetailResolver,
     MemberEditResolver,
+    MessagesResolver,
     ListsResolver,
     { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
   ],
