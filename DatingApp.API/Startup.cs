@@ -37,15 +37,18 @@ namespace DatingApp.API
             services.AddCors();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).
-            AddJsonOptions(opt=> {
-                opt.SerializerSettings.ReferenceLoopHandling = 
+            AddJsonOptions(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling =
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
             });
             services.AddDbContext<DataContext>(options =>
+            {
+                options.UseLazyLoadingProxies();
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"),
-                    x => x.MigrationsAssembly("DatingApp.API")
-                )
+                    x => x.MigrationsAssembly("DatingApp.API"));
+            }
             );
             services.AddScoped<LogUserActivity>();
             services.AddAutoMapper(typeof(DatingRepository).Assembly);
@@ -99,8 +102,16 @@ namespace DatingApp.API
             //app.UseCors("MyAllowSpecificOrigins");
             app.UseCors(x => x.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
-            app.UseMvc();
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseMvc(router =>
+            {
+                router.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Fallback", action = "Index" }
+                );
+            });
         }
     }
 }
+
